@@ -1,0 +1,23 @@
+<?php
+$MESS["LEAD_FIELD_TITLE"] = "Название лида";
+$MESS["LEAD_FIELD_NAME"] = "Имя";
+$MESS["LEAD_FIELD_LAST_NAME"] = "Фамилия";
+$MESS["LEAD_FIELD_SECOND_NAME"] = "Отчество";
+$MESS["LEAD_FIELD_COMPANY_TITLE"] = "Название компании";
+$MESS["LEAD_FIELD_POST"] = "Должность";
+$MESS["LEAD_FIELD_ADDRESS"] = "Адрес";
+$MESS["DEAL_FIELD_TITLE"] = "Название";
+$MESS["CONTACT_FIELD_NAME"] = "Имя";
+$MESS["CONTACT_FIELD_LAST_NAME"] = "Фамилия";
+$MESS["CONTACT_FIELD_SECOND_NAME"] = "Отчество";
+$MESS["CONTACT_FIELD_POST"] = "Должность";
+$MESS["CONTACT_FIELD_POST"] = "Должность";
+$MESS["CONTACT_FIELD_PHONE"] = "Телефон";
+$MESS["CONTACT_FIELD_EMAIL"] = "E-mail";
+$MESS["CONTACT_FIELD_WEB"] = "Сайт";
+$MESS["CONTACT_FIELD_ADDRESS"] = "Адрес";
+$MESS["COMPANY_FIELD_TITLE"] = "Название лида";
+$MESS["COMPANY_FIELD_PHONE"] = "Телефон";
+$MESS["COMPANY_FIELD_EMAIL"] = "E-mail";
+$MESS["COMPANY_FIELD_WEB"] = "Сайт";
+$MESS["COMPANY_FIELD_ADDRESS"] = "Адрес";
