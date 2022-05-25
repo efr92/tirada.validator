@@ -19,43 +19,52 @@ if (!Loader::includeModule($module_id)) {
 $arTabs = [
     [
         'DIV'   => 'main',
-        'TAB'   => 'Основные',
+        'TAB'   => Loc::getMessage('TV_TAB_MAIN'),
         'ICON'  => 'connection_settings',
-        'TITLE' => 'Основные',
+        'TITLE' => Loc::getMessage('TV_TAB_MAIN'),
     ],
     [
-        'DIV'   => 'lead',
-        'TAB'   => 'Лид',
-        'ICON'  => 'connection_settings',
-        'TITLE' => 'Лид',
-    ],
-    [
-        'DIV'   => 'deal',
-        'TAB'   => 'Сделка',
-        'ICON'  => 'connection_settings',
-        'TITLE' => 'Сделка',
-    ],
-    [
-        'DIV'   => 'contact',
-        'TAB'   => 'Контакты',
-        'ICON'  => 'connection_settings',
-        'TITLE' => 'Контакты',
-    ],
-    [
-        'DIV'   => 'company',
-        'TAB'   => 'Компании',
-        'ICON'  => 'connection_settings',
-        'TITLE' => 'Компании',
+        'DIV'   => 'attr',
+        'TAB'   => Loc::getMessage('TV_TAB_ATTR'),
+        'TITLE' => Loc::getMessage('TV_TAB_ATTR'),
     ],
 ];
 
+$arCrmTabs = [];
+if (Loader::includeModule('crm')) {
+    $arCrmTabs = [
+        [
+            'DIV' => 'lead',
+            'TAB' => Loc::getMessage('TV_TAB_LEAD'),
+            'TITLE' => Loc::getMessage('TV_TAB_LEAD'),
+        ],
+        [
+            'DIV' => 'deal',
+            'TAB' => Loc::getMessage('TV_TAB_DEAL'),
+            'TITLE' => Loc::getMessage('TV_TAB_DEAL'),
+        ],
+        [
+            'DIV' => 'contact',
+            'TAB' => Loc::getMessage('TV_TAB_CONTACT'),
+            'TITLE' => Loc::getMessage('TV_TAB_CONTACT'),
+        ],
+        [
+            'DIV' => 'company',
+            'TAB' => Loc::getMessage('TV_TAB_COMPANY'),
+            'TITLE' => Loc::getMessage('TV_TAB_COMPANY'),
+        ],
+    ];
+}
+
+$arTabs = array_merge($arTabs, $arCrmTabs);
+
 $arGroups = [
-    'MAIN'     => ['TITLE' => 'Основные', 'TAB' => 0],
+    'MAIN'     => ['TITLE' => Loc::getMessage('TV_GROUP_MAIN'), 'TAB' => 0],
     'DADATA'   => ['TITLE' => 'Dadata', 'TAB' => 0],
-    'LEAD'     => ['TITLE' => 'Правила валидации', 'TAB' => 1],
-    'DEAL'     => ['TITLE' => 'Правила валидации', 'TAB' => 2],
-    'CONTACT'  => ['TITLE' => 'Правила валидации', 'TAB' => 3],
-    'COMPANY'  => ['TITLE' => 'Правила валидации', 'TAB' => 4],
+    'LEAD'     => ['TITLE' => Loc::getMessage('TV_GROUP_VALIDATION_RULE'), 'TAB' => 1],
+    'DEAL'     => ['TITLE' => Loc::getMessage('TV_GROUP_VALIDATION_RULE'), 'TAB' => 2],
+    'CONTACT'  => ['TITLE' => Loc::getMessage('TV_GROUP_VALIDATION_RULE'), 'TAB' => 3],
+    'COMPANY'  => ['TITLE' => Loc::getMessage('TV_GROUP_VALIDATION_RULE'), 'TAB' => 4],
 ];
 
 $arOptions = [

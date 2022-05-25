@@ -11,7 +11,6 @@ $MESS["CONTACT_FIELD_NAME"] = "Имя";
 $MESS["CONTACT_FIELD_LAST_NAME"] = "Фамилия";
 $MESS["CONTACT_FIELD_SECOND_NAME"] = "Отчество";
 $MESS["CONTACT_FIELD_POST"] = "Должность";
-$MESS["CONTACT_FIELD_POST"] = "Должность";
 $MESS["CONTACT_FIELD_PHONE"] = "Телефон";
 $MESS["CONTACT_FIELD_EMAIL"] = "E-mail";
 $MESS["CONTACT_FIELD_WEB"] = "Сайт";
