@@ -67,25 +67,25 @@ class Validator
         $leadRulesJs = $dealRulesJs = $contactRulesJs = $companyRulesJs = '';
         foreach ($leadRules as $fieldCode => $rule) {
             $leadRulesJs .= '
-                $(document).on("click", "[data-cid=\'' . $fieldCode . '\'] input", function(){
+                $(document).on("focus", "[data-cid=\'' . $fieldCode . '\'] input", function(){
                     $(this).suggestions(options_' . $rule . ');
                 });';
         }
         foreach ($dealRules as $fieldCode => $rule) {
             $dealRulesJs .= '
-                $(document).on("click", "[data-cid=\'' . $fieldCode . '\'] input", function(){
+                $(document).on("focus", "[data-cid=\'' . $fieldCode . '\'] input", function(){
                     $(this).suggestions(options_' . $rule . ');
                 });';
         }
         foreach ($contactRules as $fieldCode => $rule) {
             $contactRulesJs .= '
-                $(document).on("click", "[data-cid=\'' . $fieldCode . '\'] input", function(){
+                $(document).on("focus", "[data-cid=\'' . $fieldCode . '\'] input", function(){
                     $(this).suggestions(options_' . $rule . ');
                 });';
         }
         foreach ($companyRules as $fieldCode => $rule) {
             $companyRulesJs .= '
-                $(document).on("click", "[data-cid=\'' . $fieldCode . '\'] input", function(){
+                $(document).on("focus", "[data-cid=\'' . $fieldCode . '\'] input", function(){
                     $(this).suggestions(options_' . $rule . ');
                 });';
         }
