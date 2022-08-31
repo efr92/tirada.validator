@@ -3,3 +3,6 @@
     position: absolute;
     top: 100%;
 }
+
+[novalidate="novalidate"] input.error { border: 1px dotted red; }
+[novalidate="novalidate"] label.error { color: red; }

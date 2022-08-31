@@ -16,19 +16,9 @@ if (!Loader::includeModule($module_id)) {
     return;
 }
 
-$arTabs = [
-    [
-        'DIV'   => 'main',
-        'TAB'   => Loc::getMessage('TV_TAB_MAIN'),
-        'ICON'  => 'connection_settings',
-        'TITLE' => Loc::getMessage('TV_TAB_MAIN'),
-    ],
-    [
-        'DIV'   => 'attr',
-        'TAB'   => Loc::getMessage('TV_TAB_ATTR'),
-        'TITLE' => Loc::getMessage('TV_TAB_ATTR'),
-    ],
-];
+global $APPLICATION;
+
+$APPLICATION->SetAdditionalCSS('/bitrix/css/tirada.validator/admin.css');
 
 $arCrmTabs = [];
 if (Loader::includeModule('crm')) {
@@ -56,16 +46,57 @@ if (Loader::includeModule('crm')) {
     ];
 }
 
-$arTabs = array_merge($arTabs, $arCrmTabs);
+$arOrderTabs = [];
+if (Loader::includeModule('sale')) {
+    $arOrderTabs = [
+        [
+            'DIV' => 'order',
+            'TAB' => Loc::getMessage('TV_TAB_ORDER'),
+            'TITLE' => Loc::getMessage('TV_TAB_ORDER'),
+        ],
+    ];
+}
 
+$arTabs = array_merge(
+    [[
+        'DIV'   => 'main',
+        'TAB'   => Loc::getMessage('TV_TAB_MAIN'),
+        'ICON'  => 'connection_settings',
+        'TITLE' => Loc::getMessage('TV_TAB_MAIN'),
+    ]],
+    $arCrmTabs,
+    $arOrderTabs,
+    [[
+        'DIV'   => 'attr',
+        'TAB'   => Loc::getMessage('TV_TAB_ATTR'),
+        'TITLE' => Loc::getMessage('TV_TAB_ATTR'),
+    ]],
+);
+
+$k = 0;
 $arGroups = [
-    'MAIN'     => ['TITLE' => Loc::getMessage('TV_GROUP_MAIN'), 'TAB' => 0],
-    'DADATA'   => ['TITLE' => 'Dadata', 'TAB' => 0],
-    'LEAD'     => ['TITLE' => Loc::getMessage('TV_GROUP_VALIDATION_RULE'), 'TAB' => 1],
-    'DEAL'     => ['TITLE' => Loc::getMessage('TV_GROUP_VALIDATION_RULE'), 'TAB' => 2],
-    'CONTACT'  => ['TITLE' => Loc::getMessage('TV_GROUP_VALIDATION_RULE'), 'TAB' => 3],
-    'COMPANY'  => ['TITLE' => Loc::getMessage('TV_GROUP_VALIDATION_RULE'), 'TAB' => 4],
+    'MAIN'     => ['TITLE' => Loc::getMessage('TV_GROUP_MAIN'), 'TAB' => $k],
+    'DADATA'   => ['TITLE' => 'Dadata', 'TAB' => $k],
 ];
+
+if (Loader::includeModule('crm')) {
+    $arGroups = array_merge($arGroups, [
+        'LEAD'     => ['TITLE' => Loc::getMessage('TV_GROUP_VALIDATION_RULE'), 'TAB' => ++$k],
+        'DEAL'     => ['TITLE' => Loc::getMessage('TV_GROUP_VALIDATION_RULE'), 'TAB' => ++$k],
+        'CONTACT'  => ['TITLE' => Loc::getMessage('TV_GROUP_VALIDATION_RULE'), 'TAB' => ++$k],
+        'COMPANY'  => ['TITLE' => Loc::getMessage('TV_GROUP_VALIDATION_RULE'), 'TAB' => ++$k],
+    ]);
+}
+
+if (Loader::includeModule('sale')) {
+    $arGroups = array_merge($arGroups, [
+        'ORDER'     => ['TITLE' => Loc::getMessage('TV_GROUP_VALIDATION_RULE'), 'TAB' => ++$k],
+    ]);
+}
+
+$arGroups = array_merge($arGroups, [
+    'ATTR'     => ['TAB' => ++$k],
+]);
 
 $arOptions = [
     'VALIDATOR_ENABLE' => [
@@ -75,12 +106,27 @@ $arOptions = [
         'DEFAULT' => '',
         'SORT' => '10',
     ],
+    'JQUERY_ENABLE' => [
+        'GROUP' => 'MAIN',
+        'TITLE' => Loc::getMessage('TV_ENABLE_JQUERY'),
+        'TYPE' => 'CHECKBOX',
+        'DEFAULT' => '',
+        'SORT' => '20',
+    ],
+    'PHONE_MASK' => [
+        'GROUP' => 'MAIN',
+        'TITLE' => Loc::getMessage('TV_PHONE_MASK'),
+        'TYPE' => 'STRING',
+        'SIZE' => '50',
+        'DEFAULT' => '',
+        'SORT' => '30',
+    ],
     'FOREIGN_COUNTRY' => [
         'GROUP' => 'DADATA',
         'TITLE' => Loc::getMessage('TV_FOREIGN_COUNTRY'),
         'TYPE' => 'CHECKBOX',
         'DEFAULT' => '',
-        'SORT' => '20',
+        'SORT' => '50',
     ],
     'TOKEN' => [
         'GROUP' => 'DADATA',
@@ -88,65 +134,91 @@ $arOptions = [
         'TYPE' => 'STRING',
         'SIZE' => '50',
         'DEFAULT' => '',
-        'SORT' => '30',
+        'SORT' => '70',
+        'NOTES' => Loc::getMessage('TV_TOKEN_NOTE'),
     ],
 ];
 
 $validateOptions = [
-    'REFERENCE' => ['(нет)', 'Адрес (подсказки dadata)', 'Название компании (подсказки dadata)'],
-    'REFERENCE_ID' => ['-', 'ADDRESS', 'COMPANY']
+    'REFERENCE' => [
+        '-',
+        Loc::getMessage('TV_RULE_PHONE'),
+        Loc::getMessage('TV_RULE_ADDRESS'),
+        Loc::getMessage('TV_RULE_COMPANY'),
+    ],
+    'REFERENCE_ID' => [
+        '-',
+        'PHONE',
+        'ADDRESS',
+        'COMPANY'
+    ]
 ];
 
-$leadFields = Entity::getLeadFields();
-$sort = 1;
-foreach ($leadFields as $leadCode => $leadField) {
-    $arOptions['LEAD_VALIDATE_' . $leadCode] = [
-        'GROUP' => 'LEAD',
-        'TITLE' => $leadField,
-        'TYPE' => 'SELECT',
-        'VALUES' => $validateOptions,
-        'SORT' => $sort,
-    ];
-    $sort++;
-}
+$ruleOptions = [
+    'REFERENCE' => [Loc::getMessage('TV_HTML_ATTR'), Loc::getMessage('TV_JQUERY_SELECTOR')],
+    'REFERENCE_ID' => ['ATTR', 'JQUERY']
+];
 
-$dealFields = Entity::getDealFields();
-$sort = 1;
-foreach ($dealFields as $dealCode => $dealField) {
-    $arOptions['DEAL_VALIDATE_' . $dealCode] = [
-        'GROUP' => 'DEAL',
-        'TITLE' => $dealField,
-        'TYPE' => 'SELECT',
-        'VALUES' => $validateOptions,
-        'SORT' => $sort,
-    ];
-    $sort++;
-}
+$arOptions['ATTR_VALIDATE'] = [
+    'GROUP' => 'ATTR',
+    'TYPE' => 'CUSTOM',
+    'SORT' => 1,
+    'RULES' => $ruleOptions,
+    'VALUES' => $validateOptions,
+];
 
-$contactFields = Entity::getContactFields();
-$sort = 1;
-foreach ($contactFields as $contactCode => $contactField) {
-    $arOptions['CONTACT_VALIDATE_' . $contactCode] = [
-        'GROUP' => 'CONTACT',
-        'TITLE' => $contactField,
-        'TYPE' => 'SELECT',
-        'VALUES' => $validateOptions,
-        'SORT' => $sort,
-    ];
-    $sort++;
-}
+if (Loader::includeModule('crm')) {
+    $leadFields = Entity::getLeadFields();
+    $sort = 1;
+    foreach ($leadFields as $leadCode => $leadField) {
+        $arOptions['LEAD_VALIDATE_' . $leadCode] = [
+            'GROUP' => 'LEAD',
+            'TITLE' => $leadField,
+            'TYPE' => 'SELECT',
+            'VALUES' => $validateOptions,
+            'SORT' => $sort,
+        ];
+        $sort++;
+    }
 
-$companyFields = Entity::getCompanyFields();
-$sort = 1;
-foreach ($companyFields as $companyCode => $companyField) {
-    $arOptions['COMPANY_VALIDATE_' . $companyCode] = [
-        'GROUP' => 'COMPANY',
-        'TITLE' => $companyField,
-        'TYPE' => 'SELECT',
-        'VALUES' => $validateOptions,
-        'SORT' => $sort,
-    ];
-    $sort++;
+    $dealFields = Entity::getDealFields();
+    $sort = 1;
+    foreach ($dealFields as $dealCode => $dealField) {
+        $arOptions['DEAL_VALIDATE_' . $dealCode] = [
+            'GROUP' => 'DEAL',
+            'TITLE' => $dealField,
+            'TYPE' => 'SELECT',
+            'VALUES' => $validateOptions,
+            'SORT' => $sort,
+        ];
+        $sort++;
+    }
+
+    $contactFields = Entity::getContactFields();
+    $sort = 1;
+    foreach ($contactFields as $contactCode => $contactField) {
+        $arOptions['CONTACT_VALIDATE_' . $contactCode] = [
+            'GROUP' => 'CONTACT',
+            'TITLE' => $contactField,
+            'TYPE' => 'SELECT',
+            'VALUES' => $validateOptions,
+            'SORT' => $sort,
+        ];
+        $sort++;
+    }
+
+    $companyFields = Entity::getCompanyFields();
+    $sort = 1;
+    foreach ($companyFields as $companyCode => $companyField) {
+        $arOptions['COMPANY_VALIDATE_' . $companyCode] = [
+            'GROUP' => 'COMPANY',
+            'TITLE' => $companyField,
+            'TYPE' => 'SELECT',
+            'VALUES' => $validateOptions,
+            'SORT' => $sort,
+        ];
+        $sort++;
+    }
 }
 
 $opt = new Options($arTabs, $arGroups, $arOptions, false);

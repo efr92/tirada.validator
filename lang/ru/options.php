@@ -1,12 +1,21 @@
 <?php
 $MESS["TV_TAB_MAIN"] = 'Основные';
-$MESS["TV_TAB_ATTR"] = 'Валидация по html-аттрибутам';
+$MESS["TV_TAB_ATTR"] = 'Свои правила';
 $MESS["TV_TAB_LEAD"] = 'Лид';
 $MESS["TV_TAB_DEAL"] = 'Сделка';
 $MESS["TV_TAB_CONTACT"] = 'Контакт';
 $MESS["TV_TAB_COMPANY"] = 'Компания';
+$MESS["TV_TAB_ORDER"] = 'Поля заказа';
 $MESS["TV_GROUP_MAIN"] = 'Основные';
 $MESS["TV_GROUP_VALIDATION_RULE"] = 'Правила валидации';
 $MESS["TV_ENABLE_MODULE"] = 'Активировать модуль';
+$MESS["TV_ENABLE_JQUERY"] = 'Подключить библиотеку jQuery';
 $MESS["TV_FOREIGN_COUNTRY"] = 'Иностранные города в подсказках';
-$MESS["TV_TOKEN"] = 'Токен';
+$MESS["TV_TOKEN"] = 'Токен (API-ключ)';
+$MESS["TV_TOKEN_NOTE"] = 'API-ключ можно получить, зарегистрировавшись на сайте dadata.ru';
+$MESS["TV_PHONE_MASK"] = 'Маска для телефона <br>(по умолчанию +7(999)-999-99-99)';
+$MESS["TV_RULE_PHONE"] = 'Телефон (маска)';
+$MESS["TV_RULE_ADDRESS"] = 'Адрес (подсказки dadata)';
+$MESS["TV_RULE_COMPANY"] = 'Название компании (подсказки dadata)';
+$MESS["TV_HTML_ATTR"] = 'html-атрибут';
+$MESS["TV_JQUERY_SELECTOR"] = 'jQuery-селектор';

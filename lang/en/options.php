@@ -1,12 +1,21 @@
 <?php
 $MESS["TV_TAB_MAIN"] = 'Main';
-$MESS["TV_TAB_ATTR"] = 'Validation by html-attribute';
+$MESS["TV_TAB_ATTR"] = 'Custom rules';
 $MESS["TV_TAB_LEAD"] = 'Lead';
 $MESS["TV_TAB_DEAL"] = 'Deal';
 $MESS["TV_TAB_CONTACT"] = 'Contact';
 $MESS["TV_TAB_COMPANY"] = 'Company';
+$MESS["TV_TAB_ORDER"] = 'Order fields';
 $MESS["TV_GROUP_MAIN"] = 'Main';
 $MESS["TV_GROUP_VALIDATION_RULE"] = 'Validation rule';
 $MESS["TV_ENABLE_MODULE"] = 'Enable validator';
+$MESS["TV_ENABLE_JQUERY"] = 'Enable jQuery';
 $MESS["TV_FOREIGN_COUNTRY"] = 'Foreign city in suggestions';
-$MESS["TV_TOKEN"] = 'Token';
+$MESS["TV_TOKEN"] = 'Token (API-key)';
+$MESS["TV_TOKEN_NOTE"] = 'You can get the API-key after registration at dadata.ru';
+$MESS["TV_PHONE_MASK"] = 'Phone mask <br>(+7(999)-999-99-99 by default)';
+$MESS["TV_RULE_PHONE"] = 'Phone (mask)';
+$MESS["TV_RULE_ADDRESS"] = 'Address (dadata suggestions)';
+$MESS["TV_RULE_COMPANY"] = 'Company name (dadata suggestions)';
+$MESS["TV_HTML_ATTR"] = 'html-attribute';
+$MESS["TV_JQUERY_SELECTOR"] = 'jQuery-selector';

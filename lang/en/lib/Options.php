@@ -1,5 +1,9 @@
 <?php
-$MESS["BUTTON_SAVE"] = "Сохранить";
-$MESS["BUTTON_CANCEL"] = "Отменить";
-$MESS["RIGHTS_TAB"] = "Доступ";
-$MESS["RIGHTS_TAB_TITLE"] = "Настройки прав доступа по группам";
+$MESS["BUTTON_SAVE"] = "Save";
+$MESS["BUTTON_CANCEL"] = "Cancel";
+$MESS["RIGHTS_TAB"] = "Access";
+$MESS["RIGHTS_TAB_TITLE"] = "Group access settings";
+$MESS["SELECT_COLOR"] = "Select color";
+$MESS["ATTR_NAME"] = "Attribute name";
+$MESS["ATTR_VALUE"] = "Attribute value";
+$MESS["VALIDATE_RULE"] = "Validate rule";

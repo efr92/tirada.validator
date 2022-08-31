@@ -47,7 +47,7 @@ Class tirada_validator extends CModule
     function InstallEvents()
     {
         $eventManager = \Bitrix\Main\EventManager::getInstance();
-        $eventManager->registerEventHandlerCompatible("main", "OnProlog", $this->MODULE_ID, "\\Tirada\\Validator","initValidator");
+        $eventManager->registerEventHandlerCompatible("main", "OnEpilog", $this->MODULE_ID, "\\Tirada\\Validator","initValidator");
 
         return true;
     }
@@ -55,7 +55,7 @@ Class tirada_validator extends CModule
     function UnInstallEvents()
     {
         $eventManager = \Bitrix\Main\EventManager::getInstance();
-        $eventManager->unRegisterEventHandler("main", "OnProlog", $this->MODULE_ID, "\\Tirada\\Validator","initValidator");
+        $eventManager->unRegisterEventHandler("main", "OnEpilog", $this->MODULE_ID, "\\Tirada\\Validator","initValidator");
         return true;
     }
 

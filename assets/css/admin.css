@@ -1,0 +1,19 @@
+.rule-add-block {
+    margin-top: 20px;
+}
+.rule-group td {
+    border-bottom: 1px solid #c4ced2;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.rule-group label {
+    padding-bottom: 5px;
+    display: inline-block;
+}
+
+.rule-group .rule-input {
+    display: inline-block;
+    margin-left: 20px;
+    margin-right: 4px;
+}

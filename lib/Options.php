@@ -62,6 +62,12 @@ class Options
                     $val = serialize($val);
 
                 $arSaveOptions[$opt] = $val;
+            } else {
+                if (count($_REQUEST['CUSTOM_RULE_PATTERN']) > 0) {
+                    $arSaveOptions['CUSTOM_RULE_PATTERN'] = $_REQUEST['CUSTOM_RULE_PATTERN'];
+                    $arSaveOptions['CUSTOM_RULE_VALUE'] = $_REQUEST['CUSTOM_RULE_VALUE'];
+                    $arSaveOptions['CUSTOM_RULE_RULE'] = $_REQUEST['CUSTOM_RULE_RULE'];
+                }
             }
         }
 
@@ -100,6 +106,10 @@ class Options
                 $this->arCurOptionValues[$opt] = $arGetOptions[$opt];
                 if(in_array($arOptParams['TYPE'], array('MSELECT')))
                     $this->arCurOptionValues[$opt] = unserialize($this->arCurOptionValues[$opt]);
+            } else {
+                $this->arCurOptionValues['CUSTOM_RULE_PATTERN'] = $arGetOptions['CUSTOM_RULE_PATTERN'];
+                $this->arCurOptionValues['CUSTOM_RULE_VALUE'] = $arGetOptions['CUSTOM_RULE_VALUE'];
+                $this->arCurOptionValues['CUSTOM_RULE_RULE'] = $arGetOptions['CUSTOM_RULE_RULE'];
             }
         }
     }
@@ -164,7 +174,7 @@ class Options
                         $APPLICATION->IncludeComponent('bitrix:main.colorpicker', '', Array(
                             'SHOW_BUTTON' => 'Y',
                             'ID' => $opt,
-                            'NAME' => 'Выбор цвета',
+                            'NAME' => Loc::getMessage('SELECT_COLOR'),
                             'ONSELECT' => 'onSelect_'.$opt
                         ), false
                         );
@@ -209,7 +219,120 @@ class Options
                             $input .= '<input type="submit" name="refresh" value="OK" />';
                         break;
                     case 'CUSTOM':
-                        $input = $arOptParams['VALUE'];
+                        $curRules = "";
+                        foreach($this->arCurOptionValues['CUSTOM_RULE_PATTERN'] as $key => $oneRule) {
+                            if(empty($oneRule) || $this->arCurOptionValues['CUSTOM_RULE_RULE'][$key] == '-') {
+                                continue;
+                            }
+
+                            if(!empty($this->arCurOptionValues['CUSTOM_RULE_VALUE'][$key])) {
+                                $curRules .= '<tr class="rule-group">
+                                                <td class="adm-detail-content-cell-l">
+                                                    <label>' . Loc::getMessage('ATTR_NAME') . '</label><br>
+                                                    <input name="CUSTOM_RULE_PATTERN[]" type="text" value="' . $oneRule . '">
+                                                </td>
+                                                <td class="adm-detail-content-cell-r">
+                                                    <span>=</span>
+                                                    <span class="rule-input">
+                                                        <label>' . Loc::getMessage('ATTR_VALUE') . '</label><br>
+                                                        <input name="CUSTOM_RULE_VALUE[]" type="text" value="' . $this->arCurOptionValues['CUSTOM_RULE_VALUE'][$key] . '">
+                                                    </span>
+                                                    <span class="rule-input">
+                                                        <label>' . Loc::getMessage('VALIDATE_RULE') . '</label><br>
+                                                        ' . SelectBoxFromArray('CUSTOM_RULE_RULE[]', $arOptParams['VALUES'], $this->arCurOptionValues['CUSTOM_RULE_RULE'][$key], '', '', ($arOptParams['REFRESH'] == 'Y'), ($arOptParams['REFRESH'] == 'Y' ? self::$moduleId : '')) . '
+                                                    </span>
+                                                </td>
+                                              </tr>';
+                            } else {
+
+                            }
+                        }
+
+
+                        $input = '<div class="rule-add-block">' . SelectBoxFromArray($opt, $arOptParams['RULES'], $val, '', '', ($arOptParams['REFRESH'] == 'Y'), ($arOptParams['REFRESH'] == 'Y' ? self::$moduleId : ''));
+                        $input .= '&nbsp;<input id="add-rule" type="button" value="Добавить" /></div>
+                                   <script>
+                                       BX.bind(BX("add-rule"), "click", function(e) { 
+                                           e.preventDefault();
+                                           let type = document.querySelector("#ATTR_VALIDATE").value;
+                                           if (type == "ATTR") {
+                                               let input = BX.create("tr", {
+                                                   props: {
+                                                      className: "rule-group"
+                                                   },
+                                                   children: [
+                                                       BX.create({
+                                                            tag: "td",
+                                                            props: {
+                                                               className: "adm-detail-content-cell-l"
+                                                            },
+                                                            children: [
+                                                              BX.create({
+                                                                 tag: "label",
+                                                                 text: "' . Loc::getMessage('ATTR_NAME') . '"
+                                                              }),
+                                                              BX.create({
+                                                                 tag: "br",
+                                                              }),
+                                                              BX.create({
+                                                                 tag: "input",
+                                                                 attrs: {
+                                                                    name: "CUSTOM_RULE_PATTERN[]",
+                                                                    type: "text",
+                                                                 },
+                                                              }),
+                                                           ]
+                                                       }),
+                                                       BX.create({
+                                                            tag: "td",
+                                                            props: {
+                                                               className: "adm-detail-content-cell-r"
+                                                            },
+                                                            children: [
+                                                              BX.create({
+                                                                 tag: "span",
+                                                                 text: "=",
+                                                              }),
+                                                              BX.create({
+                                                                 tag: "span",
+                                                                 props: {
+                                                                    className: "rule-input"
+                                                                 },
+                                                                 children: [
+                                                                    BX.create({
+                                                                       tag: "label",
+                                                                       text: "' . Loc::getMessage('ATTR_VALUE') . '"
+                                                                    }),
+                                                                    BX.create({
+                                                                       tag: "br",
+                                                                    }),
+                                                                    BX.create({
+                                                                       tag: "input",
+                                                                       attrs: {
+                                                                          name: "CUSTOM_RULE_VALUE[]",
+                                                                          type: "text",
+                                                                       },
+                                                                    }), 
+                                                                 ]
+                                                              }),                                                              
+                                                              BX.create({   
+                                                                 tag: "span",
+                                                                 props: {
+                                                                    className: "rule-input"
+                                                                 },
+                                                                 html: \'<label>' . Loc::getMessage('VALIDATE_RULE') . '</label><br>'. SelectBoxFromArray('', $arOptParams['VALUES'], $val, '', '', ($arOptParams['REFRESH'] == 'Y'), ($arOptParams['REFRESH'] == 'Y' ? self::$moduleId : '')) .'\'
+                                                              }),
+                                                           ]
+                                                       }),
+                                                       
+                                                   ]                                                  
+                                               });
+                                               BX.insertBefore(input, this.closest("tr"));
+                                               let rules = document.querySelectorAll(".rule-group select");
+                                               rules[rules.length- 1].setAttribute("name", "CUSTOM_RULE_RULE[]");
+                                           }
+                                       });
+                                   </script>';
                         break;
                     default:
                         if(!isset($arOptParams['SIZE']))
@@ -247,7 +370,9 @@ class Options
                                     </table>
                                 </div>';
 
-                $arP[$this->arGroups[$arOptParams['GROUP']]['TAB']][$arOptParams['GROUP']]['OPTIONS'][] = $label != '' ? '<tr><td valign="top" width="40%">'.$label.'</td><td valign="top" nowrap>'.$input.'</td></tr>' : '<tr><td valign="top" colspan="2" align="center">'.$input.'</td></tr>';
+                $arP[$this->arGroups[$arOptParams['GROUP']]['TAB']][$arOptParams['GROUP']]['OPTIONS'][] =
+                    $label != '' ? ($arOptParams['TYPE'] == 'CUSTOM' ? $curRules : '') . '<tr><td valign="top" width="40%">'.$label.'</td><td valign="top" nowrap>'.$input.'</td></tr>'
+                              : ($arOptParams['TYPE'] == 'CUSTOM' ? $curRules : '') . '<tr><td valign="top" colspan="2" align="center">'.$input.'</td></tr>';
                 $arP[$this->arGroups[$arOptParams['GROUP']]['TAB']][$arOptParams['GROUP']]['OPTIONS_SORT'][] = $arOptParams['SORT'];
             }
 
@@ -263,7 +388,10 @@ class Options
                 {
                     if(sizeof($group['OPTIONS_SORT']) > 0)
                     {
-                        echo '<tr class="heading"><td colspan="2">'.$this->arGroups[$group_id]['TITLE'].'</td></tr>';
+                        if(!empty($this->arGroups[$group_id]['TITLE']))
+                        {
+                            echo '<tr class="heading"><td colspan="2">'.$this->arGroups[$group_id]['TITLE'].'</td></tr>';
+                        }
 
                         array_multisort($group['OPTIONS_SORT'], $group['OPTIONS']);
                         foreach($group['OPTIONS'] as $opt)
